@@ -1,4 +1,4 @@
-# Vagrant SLURM cluster
+# SLURM cluster
 
 Slurm on AlmaLinux 9 with the packages from EPEL 9.
 
