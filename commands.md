@@ -12,17 +12,13 @@ ansible -m ping -u localsysadmin -b -k -K slurm_cluster
 ansible-playbook -v -l slurm_cluster -u localsysadmin -b -k -K ping.yaml
 ```
 
-
 ```bash
 # These tasks use normal users and sudo
 
 # Setup for domain users
-reset && ansible-playbook -v -l rhel7,rhel8,rhel9,fedora create-net-mounts.yaml -b -k -K
-reset && ansible-playbook -v -l rhel7,rhel8,rhel9,fedora initial-user-setup-domain.yaml -b -k -K
+ansible-playbook -v -l slurm_head setup_slurm_head.yaml -b -k -K
+ansible-playbook -v -l slurm_node setup_slurm_node.yaml -b -k -K
 
-# Setup for local users
-reset && ansible-playbook -v -l axiom,arcnova create-net-mounts.yaml -b -k -K
-reset && ansible-playbook -v -l axiom,arcnova initial-user-setup-local.yaml -b -k -K
 ```
 
 ## Utility
