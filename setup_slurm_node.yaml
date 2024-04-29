@@ -1,0 +1,27 @@
+- name: Playbook setup_slurm_node
+  hosts: all
+  gather_facts: true
+  become: true
+  vars_files:
+    - vars/slurm.yaml
+  tasks:
+    - ansible.builtin.name: Check if slurm_setup ran
+      stat:
+        path: /etc/slurm_setup_ran_at
+      register: slurm_setup_ran_at_stat
+    - block:
+        - name: Don't run slurm_setup if already run
+          debug:
+            msg: slurm_setup already ran
+        - meta: end_host
+      when: slurm_setup_ran_at_stat.stat.exists
+    - name: Install slurm software prerequisites
+      ansible.builtin.include_role:
+        name: slurm_r9
+        tasks_from: install_prerequisites
+    - name: Setup slurm worker node
+      ansible.builtin.include_role:
+        name: slurm_r9
+        tasks_from: setup_node
+    - name: Create slurm_setup_ran_at
+      ansible.builtin.shell: "date -R > /etc/slurm_setup_ran_at"

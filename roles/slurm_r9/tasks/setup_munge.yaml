@@ -1,0 +1,20 @@
+- name: Check for munge key
+  ansible.builtin.stat:
+    path: /etc/munge/munge.key
+  register: munge_key_stat
+- name: Create munge key
+  ansible.builtin.command: /usr/sbin/create-munge-key
+  when: not munge_key_stat.stat.exists
+# - name: Create local setup/etc/munge
+#   delegate_to: localhost
+#   command: mkdir -pv setup/etc/munge
+- name: Fetch munge key
+  ansible.builtin.fetch:
+    src: /etc/munge/munge.key
+    dest: setup/munge.key
+    flat: true
+- name: Start munge
+  ansible.builtin.systemd:
+    name: munge
+    enabled: true
+    state: restarted

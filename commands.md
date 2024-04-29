@@ -9,20 +9,16 @@ Ansible is running from Fedora 39
 ansible -m setup -u localsysadmin -b -k -K slurm_cluster
 ansible -m ping -u localsysadmin -b -k -K slurm_cluster
 
+ansible -u localsysadmin -m shell -a "rm -rfv /etc/munge/munge.key" -b -k -K slurm_cluster
+
 ansible-playbook -v -l slurm_cluster -u localsysadmin -b -k -K ping.yaml
 ```
 
 ```bash
-# These tasks use normal users and sudo
+ansible-playbook -v -u localsysadmin setup_slurm_munge.yaml -b -k -K
 
-# Setup for domain users
-ansible-playbook -v -l slurm_head setup_slurm_head.yaml -b -k -K
-ansible-playbook -v -l slurm_node setup_slurm_node.yaml -b -k -K
+ansible-playbook -v -l slurm_head -u localsysadmin setup_slurm_head.yaml -b -k -K
+ansible-playbook -v -l slurm_node -u localsysadmin setup_slurm_node.yaml -b -k -K
+ansible-playbook -v -l slurm_db -u localsysadmin setup_slurm_db.yaml -b -k -K
 
-```
-
-## Utility
-
-```bash
-ansible -m command -a "rm -rfv sshkeys dotdrop" -k -b -K rhel7,rhel8,rhel9,fedora
 ```

@@ -1,27 +1,29 @@
-- name: Playbook setup_slurm_head
+- name: Playbook setup_slurm_db
   hosts: all
   gather_facts: true
   become: true
   vars_files:
     - vars/slurm.yaml
   tasks:
-    - ansible.builtin.name: Check if slurm_setup ran
-      stat:
+    - name: Check if slurm_setup ran
+      ansible.builtin.stat:
         path: /etc/slurm_setup_ran_at
       register: slurm_setup_ran_at_stat
-    - block:
-        - name: Don't run slurm_setup if already run
-          debug:
-            msg: slurm_setup already ran
-        - meta: end_host
+    - name: Check slurm_setup_ran_at_stat
       when: slurm_setup_ran_at_stat.stat.exists
+      block:
+        - name: Don't run slurm_setup if already run
+          ansible.builtin.debug:
+            msg: slurm_setup already ran
+        # - name: end host
+        #   meta: end_host
     - name: Install slurm software prerequisites
       ansible.builtin.include_role:
         name: slurm_r9
         tasks_from: install_prerequisites
-    - name: Setup slurm head
+    - name: Setup slurm database
       ansible.builtin.include_role:
         name: slurm_r9
-        tasks_from: setup_head
+        tasks_from: setup_db
     - name: Create slurm_setup_ran_at
       ansible.builtin.shell: "date -R > /etc/slurm_setup_ran_at"

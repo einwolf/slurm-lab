@@ -1,0 +1,40 @@
+# munge test: munge -n | unmunge
+---
+- name: Create munge.key
+  hosts: slurm_head
+  gather_facts: true
+  become: true
+  # vars_files:
+  #   - vars/slurm.yaml
+  tasks:
+    - name: Install slurm software prerequisites
+      ansible.builtin.include_role:
+        name: slurm_r9
+        tasks_from: install_prerequisites
+    - name: Setup munge
+      ansible.builtin.include_role:
+        name: slurm_r9
+        tasks_from: setup_munge
+- name: Copy munge.key to nodes
+  hosts: slurm_node
+  gather_facts: true
+  become: true
+  # vars_files:
+  #   - vars/slurm.yaml
+  tasks:
+    - name: Install slurm software prerequisites
+      ansible.builtin.include_role:
+        name: slurm_r9
+        tasks_from: install_prerequisites
+    - name: Copy munge.key
+      ansible.builtin.copy:
+        src: setup/munge.key
+        dest: /etc/munge/munge.key
+        owner: munge
+        group: munge
+        mode: "0400"
+    - name: Start munge
+      ansible.builtin.systemd:
+        name: munge
+        enabled: true
+        state: restarted

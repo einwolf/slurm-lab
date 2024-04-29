@@ -1,0 +1,75 @@
+- name: Install mariadb packages
+  ansible.builtin.dnf:
+    state: present
+    name:
+      - mariadb
+      - mariadb-server
+      - mariadb-server-utils
+- name: Copy sl-innodb.cnf
+  ansible.builtin.copy:
+    src: db/etc/my.cnf.d/sl-innodb.cnf
+    dest: /etc/my.cnf.d/sl-innodb.cnf
+    owner: root
+    group: root
+    mode: ug=rw,g=r
+- name: Stop mariadb
+  ansible.builtin.systemd:
+    name: mariadb
+    enabled: false
+    state: stopped
+- name: Delete mariadb database(s)
+  ansible.builtin.shell:
+    cmd: rm -rfv /var/lib/mysql/*
+- name: Start mariadb
+  ansible.builtin.systemd:
+    name: mariadb
+    enabled: true
+    state: restarted
+# This is mariadb 10.5.22 that the default login has root and mysql users with no password
+# that can only be accessed locally by corresponding user account.
+- name: Configure mariadb databases
+  ansible.builtin.shell: |
+    mysql -u root << EOF
+    use mysql;
+    grant all privileges on * TO 'root'@'%' identified by '{{ mysql_root_password }}' with grant option;
+    flush privileges;
+    EOF
+- name: Check for slurm_acct_db
+  ansible.builtin.shell: |
+    set -o pipefail
+    echo "show databases;" | mysql -u root | grep slurm_acct_db
+  # Grep not finding anything returns 1
+  register: check_slurm_acct_db_result
+  failed_when: false
+- name: Create slurm_acct_db database
+  ansible.builtin.shell: |
+    mysql -u root << EOF
+    create database slurm_acct_db;
+    grant all privileges on slurm_acct_db.* TO 'slurm'@'%' identified by '{{ slurmdb_password }}' with grant option;
+    EOF
+  # 0 matches, 1 no matches, 2+ error
+  when: check_slurm_acct_db_result.rc == 1
+- name: Start munge
+  ansible.builtin.systemd:
+    name: munge
+    enabled: true
+    state: restarted
+# - name: Copy slurm.conf
+#   ansible.builtin.template:
+#     src: etc/slurm/slurm.conf
+#     dest: /etc/slurm/slurm.conf
+#     owner: root
+#     group: root
+#     mode: u=rw,go=r
+# - name: Copy slurmdbd.conf
+#   ansible.builtin.template:
+#     src: etc/slurm/slurmdbd.conf
+#     dest: /etc/slurm/slurmdbd.conf
+#     owner: root
+#     group: root
+#     mode: u=rw,go=
+# - name: Start slurmdbd
+#   ansible.builtin.service:
+#     name: slurmdbd
+#     enabled: true
+#     state: restarted

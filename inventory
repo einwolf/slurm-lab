@@ -3,6 +3,9 @@ localhost ansible_connection=local
 [slurm_head]
 sl1h1
 
+[slurm_db]
+sl1db1
+
 [slurm_node]
 sl1w1
 sl1w2
@@ -11,4 +14,5 @@ sl1w4
 
 [slurm_cluster:children]
 slurm_head
+slurm_db
 slurm_node
