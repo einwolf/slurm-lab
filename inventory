@@ -11,6 +11,8 @@ sl1w1
 sl1w2
 sl1w3
 sl1w4
+sl1g1
+sl1g2
 
 [slurm_cluster:children]
 slurm_head

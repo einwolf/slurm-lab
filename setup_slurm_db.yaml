@@ -25,5 +25,5 @@
       ansible.builtin.include_role:
         name: slurm_r9
         tasks_from: setup_db
-    - name: Create slurm_setup_ran_at
-      ansible.builtin.shell: "date -R > /etc/slurm_setup_ran_at"
+    # - name: Create slurm_setup_ran_at
+    #   ansible.builtin.shell: "date -R > /etc/slurm_setup_ran_at"

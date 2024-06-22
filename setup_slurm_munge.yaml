@@ -16,16 +16,16 @@
         name: slurm_r9
         tasks_from: setup_munge
 - name: Copy munge.key to nodes
-  hosts: slurm_node
+  hosts: slurm_node,slurm_db
   gather_facts: true
   become: true
   # vars_files:
   #   - vars/slurm.yaml
   tasks:
-    - name: Install slurm software prerequisites
-      ansible.builtin.include_role:
-        name: slurm_r9
-        tasks_from: install_prerequisites
+    # - name: Install slurm software prerequisites
+    #   ansible.builtin.include_role:
+    #     name: slurm_r9
+    #     tasks_from: install_prerequisites
     - name: Copy munge.key
       ansible.builtin.copy:
         src: setup/munge.key

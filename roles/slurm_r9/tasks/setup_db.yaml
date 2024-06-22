@@ -54,22 +54,22 @@
     name: munge
     enabled: true
     state: restarted
-# - name: Copy slurm.conf
-#   ansible.builtin.template:
-#     src: etc/slurm/slurm.conf
-#     dest: /etc/slurm/slurm.conf
-#     owner: root
-#     group: root
-#     mode: u=rw,go=r
-# - name: Copy slurmdbd.conf
-#   ansible.builtin.template:
-#     src: etc/slurm/slurmdbd.conf
-#     dest: /etc/slurm/slurmdbd.conf
-#     owner: root
-#     group: root
-#     mode: u=rw,go=
-# - name: Start slurmdbd
-#   ansible.builtin.service:
-#     name: slurmdbd
-#     enabled: true
-#     state: restarted
+- name: Copy slurm.conf
+  ansible.builtin.template:
+    src: etc/slurm/slurm.conf
+    dest: /etc/slurm/slurm.conf
+    owner: root
+    group: root
+    mode: u=rw,go=r
+- name: Copy slurmdbd.conf
+  ansible.builtin.template:
+    src: etc/slurm/slurmdbd.conf
+    dest: /etc/slurm/slurmdbd.conf
+    owner: root
+    group: root
+    mode: u=rw,go=
+- name: Start slurmdbd
+  ansible.builtin.service:
+    name: slurmdbd
+    enabled: true
+    state: restarted
