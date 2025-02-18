@@ -1,19 +1,24 @@
 #!/bin/bash
 
-virsh destroy sl1h1
-virsh undefine --remove-all-storage sl1h1
+export VIRSH_DEFAULT_CONNECT_URI=qemu:///system
 
-virsh destroy sl1db1
-virsh undefine --remove-all-storage sl1db1
+virsh destroy slurm1-head1
+virsh undefine --remove-all-storage slurm1-head1
 
-virsh destroy sl1w1
-virsh undefine --remove-all-storage sl1w1
+virsh destroy slurm1-db1
+virsh undefine --remove-all-storage slurm1-db1
 
-virsh destroy sl1w2
-virsh undefine --remove-all-storage sl1w2
+virsh destroy slurm1-worker1
+virsh undefine --remove-all-storage slurm1-worker1
 
-virsh destroy sl1w3
-virsh undefine --remove-all-storage sl1w3
+virsh destroy slurm1-worker2
+virsh undefine --remove-all-storage slurm1-worker2
 
-virsh destroy sl1w4
-virsh undefine --remove-all-storage sl1w4
+virsh destroy slurm1-worker3
+virsh undefine --remove-all-storage slurm1-worker3
+
+virsh destroy slurm1-worker4
+virsh undefine --remove-all-storage slurm1-worker4
+
+virsh destroy slurm1-gpu1
+virsh undefine --remove-all-storage slurm1-gpu1
