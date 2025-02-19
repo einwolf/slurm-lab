@@ -9,7 +9,7 @@
     name:
       - chrony
       - nano
-      - mariadb
+      # - mariadb
       - xorg-x11-utils
       - xorg-x11-xauth
       - slurm

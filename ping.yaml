@@ -8,7 +8,7 @@
     delegate_to: localhost
     become: false
     throttle: 1
-    command:
+    ansible.builtin.command:
       cmd: "ssh-keygen -r {{ inventory_hostname_short }}"
   - name: Ping hosts
-    ping:
+    ansible.builtin.ping:
