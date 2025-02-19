@@ -1,20 +1,19 @@
 localhost ansible_connection=local
 
-[slurm_head]
-sl1h1
+[slurm1_head]
+slurm1-head1
 
-[slurm_db]
-sl1db1
+[slurm1_db]
+slurm1-db1
 
-[slurm_node]
-sl1w1
-sl1w2
-sl1w3
-sl1w4
-sl1g1
-sl1g2
+[slurm1_node]
+slurm1-worker1
+slurm1-worker2
+slurm1-worker3
+slurm1-worker4
+slurm1-gpu1
 
-[slurm_cluster:children]
-slurm_head
-slurm_db
-slurm_node
+[slurm1_cluster:children]
+slurm1_head
+slurm1_db
+slurm1_node

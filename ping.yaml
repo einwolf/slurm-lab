@@ -1,4 +1,14 @@
 - hosts: all
+  gather_facts: false
+  become: true
+  vars_files:
+    - vars/vars_vault.yaml
   tasks:
-    - name: Ping all hosts
-      ping:
+  - name: Remove ssh host key
+    delegate_to: localhost
+    become: false
+    throttle: 1
+    command:
+      cmd: "ssh-keygen -r {{ inventory_hostname_short }}"
+  - name: Ping hosts
+    ping:

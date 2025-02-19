@@ -1,6 +1,6 @@
 # Slurm cluster setup
 
-Ansible is running from Fedora 39
+Ansible is running from Fedora 41
 
 ## Example commands
 
@@ -9,6 +9,9 @@ Ansible is running from Fedora 39
 ansible -m setup -u localsysadmin -b -k -K slurm_cluster
 ansible -m ping -u localsysadmin -b -k -K slurm_cluster
 ansible-playbook -v -l slurm_cluster -u localsysadmin -b -k -K ping.yaml
+
+# Using vault login
+ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook -v ping.yaml -l slurm1_cluster
 
 # These files should be the same on all nodes
 ansible -u localsysadmin -m shell -a "sha256sum /etc/munge/munge.key" -b -k -K slurm_cluster
