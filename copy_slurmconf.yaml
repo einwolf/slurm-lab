@@ -17,3 +17,15 @@
       enabled: true
       state: restarted
     when: "'db' in inventory_hostname_short"
+  - name: Restart slurmctld
+    ansible.builtin.service:
+      name: slurmctld
+      enabled: true
+      state: restarted
+    when: "'head' in inventory_hostname_short"
+  - name: Restart slurmd
+    ansible.builtin.systemd:
+      name: slurmd
+      enabled: true
+      state: restarted
+    when: "'worker' in inventory_hostname_short or 'gpu' in inventory_hostname_short"

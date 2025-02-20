@@ -54,7 +54,7 @@ virt-install --osinfo almalinux9 --name sl1h1 --vcpus 4 --memory 8192 --disk poo
 --network=bridge:br0,mac=12:34:12:34:12:34
 ```
 
-## Kube Cluster 1
+## Slurm Cluster 1
 
 ```bash
 virsh destroy sl1h1

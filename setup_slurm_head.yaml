@@ -4,6 +4,7 @@
   become: true
   vars_files:
     - vars/slurm.yaml
+    - vars/vars_vault.yaml
   tasks:
     - name: Check if setup_slurm_head ran
       ansible.builtin.stat:
