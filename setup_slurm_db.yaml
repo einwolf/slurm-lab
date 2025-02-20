@@ -3,6 +3,7 @@
   gather_facts: true
   become: true
   vars_files:
+    - vars/vars_vault.yaml
     - vars/slurm.yaml
   tasks:
     - name: Check if slurm_setup ran

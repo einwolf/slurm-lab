@@ -1,0 +1,19 @@
+- hosts: all
+  gather_facts: false
+  become: true
+  vars_files:
+    - vars/vars_vault.yaml
+  tasks:
+  - name: Copy slurm.conf
+    ansible.builtin.copy:
+      src: roles/slurm_r9/templates/etc/slurm/slurm.conf
+      dest: /etc/slurm/slurm.conf
+      owner: root
+      group: root
+      mode: "0664"
+  - name: Restart slurmdbd
+    ansible.builtin.service:
+      name: slurmdbd
+      enabled: true
+      state: restarted
+    when: "'db' in inventory_hostname_short"

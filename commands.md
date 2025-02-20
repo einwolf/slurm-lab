@@ -24,8 +24,9 @@ ansible -u localsysadmin -m shell -a "rm -rfv /etc/munge/munge.key" -b -k -K slu
 
 ```bash
 ansible-playbook -v setup_slurm_munge.yaml
+ansible-playbook -v -l slurm1_cluster copy_slurmconf.yaml
 
-ansible-playbook -v -l slurm_db -u localsysadmin setup_slurm_db.yaml -b -k -K
-ansible-playbook -v -l slurm_head -u localsysadmin setup_slurm_head.yaml -b -k -K
-ansible-playbook -v -l slurm_node -u localsysadmin setup_slurm_node.yaml -b -k -K
+ansible-playbook -v -l slurm1_db -u localsysadmin setup_slurm_db.yaml
+ansible-playbook -v -l slurm1_head -u localsysadmin setup_slurm_head.yaml
+ansible-playbook -v -l slurm1_node -u localsysadmin setup_slurm_node.yaml
 ```

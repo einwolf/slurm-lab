@@ -25,7 +25,7 @@
     name: mariadb
     enabled: true
     state: restarted
-# This is mariadb 10.5.22 that the default login has root and mysql users with no password
+# This is mariadb 10.5.27 that the default login has root and mysql users with no password
 # that can only be accessed locally by corresponding user account.
 - name: Configure mariadb databases
   ansible.builtin.shell: |

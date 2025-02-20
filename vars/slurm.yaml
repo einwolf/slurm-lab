@@ -1,2 +1,2 @@
 mysql_root_password: "rootpassword"
-slurmdb_password: "slurmdb_password"
+slurmdb_password: "slurmpassword"
